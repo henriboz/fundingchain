@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+    <title>Crowd Funding</title>
+</head>
+
+<body>
+
+<header th:replace="layout :: site-header" />
+<aside>
+	<h2>Recent Projects</h2>
+	<a href="#" th:each="p : ${latest5Projects}" th:text="${p.title}" th:href="@{/projects/view/{id}/(id=${p.id})}">Work Begins on HTML5.1</a>
+</aside>
+<main id="projects">
+    <article th:each="p : ${latest3Projects}">
+      <h2 class="title" th:text="${p.title}">Post Title</h2>
+      <div class="date">
+        <i>Posted on</i>
+        <!-- <span th:text="${#dates.format(p.creation_date, 'dd-MMM-yyyy')}">22-May-2016</span> -->
+        <span th:if="${p.owner}" th:remove="tag">
+          <i>by</i>
+          <span th:text="${p.owner.fullName != null ?
+                        p.owner.fullName : p.owner.username}">Crowd Funding</span>
+        </span>
+      </div>
+      <p class="content" th:utext="${p.description}">Project Description</p>
+    </article>
+</main>
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>

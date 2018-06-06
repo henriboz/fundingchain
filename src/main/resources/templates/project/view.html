@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+    <title th:text="${project.title}">View Post</title>
+</head>
+
+<body>
+
+<header th:replace="layout :: site-header" />
+
+<main id="posts">
+  <article>
+    <h2 class="title" th:text="${project.title}">Post Title</h2>
+    <div class="date">
+    <i>Posted on</i>
+    <!--<span th:text="${#dates.format(post.date, 'dd-MMM-yyyy')}">22-May-2016</span>-->
+        <span th:if="${project.owner}" th:remove="tag">
+        <i>by</i>
+        <span th:text="${project.owner.fullName != null ?
+                         project.owner.fullName : project.owner.username}">Henrique Boz</span>
+        </span>
+    </div>
+    <p class="content" th:utext="${project.description}">Post content</p>
+  </article>
+</main>
+
+<footer th:replace="layout :: site-footer" />
+
+</body>
+
+</html>
