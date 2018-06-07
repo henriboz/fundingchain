@@ -2,33 +2,72 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
-    <title>Crowd Funding</title>
 </head>
+	<body>
+		<header th:replace="layout :: site-header" />
+		<div class="fh5co-hero">
+			<div class="fh5co-overlay"></div>
+			<div class="fh5co-cover text-center" data-stellar-background-ratio="0.5" style="background-image: url(img/cover_bg_1.jpg);">
+				<div class="desc animate-box">
+					<h2><strong>Start</strong> Funding<strong> Now</strong></h2>
+					<span>
+						<a class="btn btn-primary btn-lg" href="/users/register.html"
+						   th:href="@{/users/register}" th:if="!${#httpServletRequest.remoteUser}">
+							Register
+						</a>
+					</span>
+				</div>
+			</div>
+		</div>
 
-<body>
+		<div id="fh5co-feature-product" class="fh5co-section-gray">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center heading-section">
+						<h3>How it Works</h3>
+						<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+					</div>
+				</div>
 
-<header th:replace="layout :: site-header" />
-<aside>
-	<h2>Recent Projects</h2>
-	<a href="#" th:each="p : ${latest5Projects}" th:text="${p.title}" th:href="@{/projects/view/{id}/(id=${p.id})}">Work Begins on HTML5.1</a>
-</aside>
-<main id="projects">
-    <article th:each="p : ${latest3Projects}">
-      <h2 class="title" th:text="${p.title}">Post Title</h2>
-      <div class="date">
-        <i>Posted on</i>
-        <!-- <span th:text="${#dates.format(p.creation_date, 'dd-MMM-yyyy')}">22-May-2016</span> -->
-        <span th:if="${p.owner}" th:remove="tag">
-          <i>by</i>
-          <span th:text="${p.owner.fullName != null ?
-                        p.owner.fullName : p.owner.username}">Crowd Funding</span>
-        </span>
-      </div>
-      <p class="content" th:utext="${p.description}">Project Description</p>
-    </article>
-</main>
-
-<footer th:replace="layout :: site-footer" />
-</body>
-
+				<div class="row row-bottom-padded-md">
+					<div class="col-md-12 text-center animate-box">
+						<p>
+							<img src="img/cover_bg_1.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/>
+						</p>
+					</div>
+					<div class="col-md-6 text-center animate-box">
+						<p>
+							<img src="img/cover_bg_2.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/>
+						</p>
+					</div>
+					<div class="col-md-6 text-center animate-box">
+						<p>
+							<img src="img/cover_bg_3.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="feature-text">
+							<h3>Love</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="feature-text">
+							<h3>Compassion</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="feature-text">
+							<h3>Charity</h3>
+							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer th:replace="layout :: site-footer" />
+	</body>
 </html>

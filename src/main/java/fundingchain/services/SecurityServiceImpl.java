@@ -31,7 +31,6 @@ public class SecurityServiceImpl implements SecurityService{
     public String findLoggedInUsername() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	String authName = auth.getName();
-    	//System.out.println("Here:"+authName);
         if (authName != null && authName != "" ) {
             return authName;
         }
