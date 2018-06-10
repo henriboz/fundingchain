@@ -2,31 +2,128 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
-    <title th:text="${project.title}">View Post</title>
+    <title th:text="${project.title}"></title>
 </head>
 
 <body>
-
 <header th:replace="layout :: site-header" />
+    <div class="fh5co-hero">
+        <div class="fh5co-overlay"></div>
+        <div class="fh5co-cover text-center" data-stellar-background-ratio="0.5" style="background-image: url(/img/cover_bg_2.jpg);">
+            <div class="desc animate-box">
+                <h2><strong th:text="${project.getTitle()}"></strong></h2>
+                <span th:text="${project.getDescription()}"></span>
+            </div>
+        </div>
 
-<main id="posts">
-  <article>
-    <h2 class="title" th:text="${project.title}">Post Title</h2>
-    <div class="date">
-    <i>Posted on</i>
-    <!--<span th:text="${#dates.format(post.date, 'dd-MMM-yyyy')}">22-May-2016</span>-->
-        <span th:if="${project.owner}" th:remove="tag">
-        <i>by</i>
-        <span th:text="${project.owner.fullName != null ?
-                         project.owner.fullName : project.owner.username}">Henrique Boz</span>
-        </span>
     </div>
-    <p class="content" th:utext="${project.description}">Post content</p>
-  </article>
-</main>
+    <div id="fh5co-feature-product" class="fh5co-section-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>About</h3>
+                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                </div>
+            </div>
+
+            <div class="row row-bottom-padded-md">
+                <div class="col-md-6 text-center animate-box">
+                    <p><img src="/img/cover_bg_2.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/></p>
+                </div>
+                <div class="col-md-6 text-center animate-box">
+                    <p><img src="/img/cover_bg_3.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/></p>
+                </div>
+            </div>
+
+
+            <div class="container">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Rewards</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-paper-plane"></i></span>
+                            <h3>Up to X</h3>
+                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-aircraft"></i></span>
+                            <h3>Between X and Y</h3>
+                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-rocket"></i></span>
+                            <h3>More than Y</h3>
+                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Project Status</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="services animate-box">
+                            <span><i class="icon-stats-bars"></i></span>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12">
+                                    <h3>Target Value</h3>
+                                    <p th:text="${project.getFundingValue()}"></p>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <h3>Total Fundings</h3>
+                                    <p th:text="${project.getSumFundingsValue()}"></p>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <h3>Time Left</h3>
+                                    <p th:text="${project.getDueDateString()}"></p>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                     aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
+                                     th:style="'width:'+${project.getProjectPercentComplete()}+'%'"
+                                     th:text="${project.getProjectPercentComplete()}+'%'"
+                                >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Latest Funders</h3>
+                </div>
+                <div class="col-md-4">
+                    <div class="fh5co-team text-center animate-box">
+                        <figure>
+                            <img src="/img/person_2.jpg" alt="user"/>
+                        </figure>
+                        <div>
+                            <h3>Henrique Schmidt Boz</h3>
+                            <i class="icon-coin-dollar" > </i>
+                            <span>Value: 20.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 <footer th:replace="layout :: site-footer" />
-
 </body>
 
 </html>

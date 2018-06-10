@@ -1,7 +1,10 @@
 package fundingchain.models;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.persistence.*;
 
 @Entity
@@ -24,10 +27,10 @@ public class Project {
 	@Column(nullable = false, columnDefinition="TINYINT")
 	private boolean active;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "DATETIME")
 	private Date creation_date = new Date();
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "DATETIME")
 	private Date due_date = new Date();
 	
 	@Column(nullable = false)
@@ -67,15 +70,14 @@ public class Project {
 	public void setActive(boolean active){
 		this.active = active;
 	}
-	public Date getCreationDate(){
-		return creation_date;
-	}
+	public Date getCreationDate(){ return creation_date;	}
 	public void setCreationDate(Date creation_date){
 		this.creation_date = creation_date;
 	}
 	public Date getDueDate(){
 		return due_date;
 	}
+
 	public void setDueDate(Date due_date){
 		this.due_date = due_date;
 	}
@@ -106,5 +108,39 @@ public class Project {
 	@Override
 	public String toString(){
 		return "";
+	}
+	public double getSumFundingsValue(){
+		double value = 0;
+		for (Funding f: this.getFundings()){
+			value += f.getValue();
+		}
+		return value;
+	}
+
+	public String getDueDateString(){
+		Date now = new Date();
+		long ms = this.due_date.getTime() - now.getTime();
+		int time;
+		String result;
+		String post_result;
+		if (ms < 86400000 )
+		{
+			time = (int)TimeUnit.HOURS.convert(ms, TimeUnit.MILLISECONDS);
+			if (time == 1) post_result = "hour";
+			else post_result = "hours";
+			result = String.valueOf(time) + " " + post_result;
+		}
+		else
+		{
+			time = (int)TimeUnit.DAYS.convert(ms, TimeUnit.MILLISECONDS);
+			if (time == 1) post_result = "day";
+			else post_result = "days";
+			result = String.valueOf(time) + " " + post_result;
+		}
+		return result;
+	}
+
+	public int getProjectPercentComplete(){
+		return (int)(100*this.getSumFundingsValue()/this.getFundingValue());
 	}
 }

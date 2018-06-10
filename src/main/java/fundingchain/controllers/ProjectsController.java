@@ -40,9 +40,8 @@ public class ProjectsController {
       }
       model.addAttribute("projects", projects);
       
-      List<Project> latest5Projects = projectService.findLatest5();
-      model.addAttribute("latest5Projects", latest5Projects);
-
+      //List<Project> latest5Projects = projectService.findLatest5();
+      //model.addAttribute("latest5Projects", latest5Projects);
       return "projects/index";
     }
 }

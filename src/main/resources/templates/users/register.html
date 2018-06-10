@@ -2,50 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layout :: site-head">
-  <title>Register a User</title>
+  <title>Login</title>
 </head>
-
 <body>
-
 <header th:replace="layout :: site-header" />
-
-<h1>Register a User</h1>
-
-<form method="post" th:object="${registerForm}">
-  <div>
-    <label for="username">Username:</label>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center heading-section animate-box">
+      <h3>Register now!</h3>
+    </div>
   </div>
-  <input id="username" type="text" name="username" th:value="*{username}" />
-  <span class="formError" th:if="${#fields.hasErrors('username')}"
-                                th:errors="*{username}">Invalid username</span>
-  <div>
-    <label for="fullname">Full Name:</label>
-  </div>
-  <input id="fullname" type="text" name="fullname" th:value="*{fullname}" />
-  <span class="formError" th:if="${#fields.hasErrors('fullname')}"
-                                th:errors="*{fullname}">Invalid full name</span>
-
-  <div>
-    <label for="password" th:value="*{password}">Password:</label>
-  </div>
-  <input id="password" type="password" name="password" th:value="*{password}" />
-  <span class="formError" th:if="${#fields.hasErrors('password')}"
-                                th:errors="*{password}">Invalid password</span>
-<div>
-  <label for="confirmpassword" th:value="*{confirmpassword}">Confirm Password:</label>
 </div>
-<input id="confirmpassword" type="password" name="confirmpassword" th:value="*{confirmpassword}" />
-<span class="formError" th:if="${#fields.hasErrors('confirmpassword')}"
-                                th:errors="*{confirmpassword}">Invalid password</span>
-
-
-  <div>
-    <input type="submit" value="Register"/>
-  </div>
-</form>
-
+<div class="container">
+  <form method="post" th:object="${registerForm}">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="username"><b>Username</b></label>
+            <input id="username" type="text" name="username" class="form-control" placeholder="Username" th:value="*{username}"/>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="fullname"><b>Full Name</b></label>
+            <input id="fullname" type="text" name="fullname" class="form-control" placeholder="Full Name" th:value="*{fullname}"/>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="password"><b>Password</b></label>
+            <input id="password" type="password" name="password" class="form-control" placeholder="Password" th:value="*{password}"/>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="confirmpassword"><b>Confirm Password</b></label>
+            <input id="confirmpassword" type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password" th:value="*{confirmpassword}"/>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <input type="submit" value="Register" class="btn btn-primary"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
 <footer th:replace="layout :: site-footer" />
-
 </body>
+
 
 </html>

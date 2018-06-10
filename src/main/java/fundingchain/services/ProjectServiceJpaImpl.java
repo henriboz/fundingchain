@@ -1,6 +1,7 @@
 package fundingchain.services;
 
 import fundingchain.models.Project;
+import fundingchain.repositories.FundingRepository;
 import fundingchain.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -15,6 +16,9 @@ public class ProjectServiceJpaImpl implements ProjectService {
 
 	@Autowired
 	private ProjectRepository projectRepo;
+
+	@Autowired
+	private FundingRepository fundingRepo;
 	
 	@Override
 	public List<Project> findAll() {
@@ -25,8 +29,7 @@ public class ProjectServiceJpaImpl implements ProjectService {
 	public List<Project> findLatest5() {
 		return this.projectRepo.findLatest5Posts(new PageRequest(0, 5));
 	}
-	
-	
+
 	@Override
 	public Project findById(Long id) {
 		return this.projectRepo.findOne(id);
