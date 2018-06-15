@@ -1,6 +1,7 @@
 package fundingchain.models;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "fundings")
@@ -18,8 +19,10 @@ public class Funding{
 	
 	@Column(nullable = false)
 	private double	value;
-	
-	
+
+	@Column(nullable = false, columnDefinition = "DATETIME")
+	private Date fundingdate = new Date();
+
 	public Project getProject(){
 		return this.project;
 	}
@@ -38,7 +41,9 @@ public class Funding{
 	public void setValue(double value){
 		this.value = value;
 	}
-	
+	public Date getFundingdate() {	return fundingdate;}
+	public void setFundingdate(Date fundingdate) { this.fundingdate = fundingdate; }
+
 	public Funding(){}
 	public Funding(Project project, User funder, double value){
 		this.project = project;

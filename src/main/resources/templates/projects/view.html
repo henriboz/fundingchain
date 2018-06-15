@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-12 text-center heading-section">
                     <h3>About</h3>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                    <p th:text="${project.getAbout()}"></p>
                 </div>
             </div>
 
@@ -34,37 +34,6 @@
                     <p><img src="/img/cover_bg_3.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/></p>
                 </div>
             </div>
-
-
-            <div class="container">
-                <div class="col-md-12 text-center heading-section">
-                    <h3>Rewards</h3>
-                </div>
-                <div class="row text-center">
-                    <div class="col-md-4 col-sm-4">
-                        <div class="services animate-box">
-                            <span><i class="icon-paper-plane"></i></span>
-                            <h3>Up to X</h3>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="services animate-box">
-                            <span><i class="icon-aircraft"></i></span>
-                            <h3>Between X and Y</h3>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4">
-                        <div class="services animate-box">
-                            <span><i class="icon-rocket"></i></span>
-                            <h3>More than Y</h3>
-                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
             <div class="row">
                 <div class="col-md-12 text-center heading-section">
@@ -85,7 +54,7 @@
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <h3>Time Left</h3>
-                                    <p th:text="${project.getDueDateString()}"></p>
+                                    <p th:text="${project.getDuedateString()}"></p>
                                 </div>
                             </div>
                             <div class="progress">
@@ -101,20 +70,83 @@
                 </div>
             </div>
 
+            <div class="container">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Rewards</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-paper-plane"></i></span>
+                            <h3>Up to <b th:text="${reward.getLowervalue()}"></b></h3>
+                            <p th:text="${reward.getLowerDesc()}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-aircraft"></i></span>
+                            <h3>Between <b th:text="${reward.getMidvalue()}"></b> and <b th:text="${reward.getUppervalue()}"></b></h3>
+                            <p th:text="${reward.getMidDesc()}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-rocket"></i></span>
+                            <h3>More than <b th:text="${reward.getUppervalue()}"></b></h3>
+                            <p th:text="${reward.getUpperDesc()}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Fund Now!</h3>
+                </div>
+                <div class="row text-center">
+                    <form method="post" th:object="${fundingForm}">
+                        <div class="col-md-4 col-sm-12"></div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="services animate-box">
+                                <span><i class="icon-coin-dollar"></i></span>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <h3>Enter the value you want to fund:</h3>
+                                        <p>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input id="value" type="value" name="value" class="form-control" placeholder="value" th:value="*{value}"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input type="submit" value="Fund" class="btn btn-primary"/>
+                                            </div>
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12"></div>
+                    </form>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12 text-center heading-section">
                     <h3>Latest Funders</h3>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" th:each="f : ${fundings}">
                     <div class="fh5co-team text-center animate-box">
                         <figure>
                             <img src="/img/person_2.jpg" alt="user"/>
                         </figure>
                         <div>
-                            <h3>Henrique Schmidt Boz</h3>
+                            <h3 th:text="${f.getFunder().getFullName()}"></h3>
                             <i class="icon-coin-dollar" > </i>
-                            <span>Value: 20.0</span>
+                            <span>Value: <b th:text="${f.getValue()}"></b></span>
                         </div>
                     </div>
                 </div>

@@ -54,6 +54,24 @@ figure {
   margin-bottom: 2em;
 }
 
+ul#messages li {
+  display: block;
+  width: 80%;
+  margin: 5px auto;
+  text-align: center;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+ul#messages li.info {
+  background: #7f7;
+}
+
+ul#messages li.error {
+  background: #d00;
+  color: white;
+}
+
 ::-webkit-selection {
   color: #fcfcfc;
   background: #ff5722;
@@ -1471,5 +1489,7 @@ figure {
   z-index: 9999;
   background: url(../images/hourglass.svg) center no-repeat #222222;
 }
+
+
 
 /*# sourceMappingURL=style.css.map */

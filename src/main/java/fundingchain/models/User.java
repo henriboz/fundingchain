@@ -30,8 +30,11 @@ public class User{
 	
 	@ManyToMany()
 	private List<Role> roles = new ArrayList<Role>();
-	
-	public Long getId() { 
+
+	@OneToOne
+	private Wallet wallet;
+
+	public Long getId() {
 		return id; 
 		}
     public void setId(Long id) { 
@@ -79,20 +82,23 @@ public class User{
     public void addRole(Role role){
     	this.roles.add(role);
     }
+	public Wallet getWallet() {	return wallet; }
+	public void setWallet(Wallet wallet) { this.wallet = wallet; }
     public User() { }
-    public User(User user){
+    /*public User(User user){
     	this.setUsername(user.getUsername());
     	this.setPassword(user.getPassword());
     	this.setFullName(user.getFullName());
-    }
+    }*/
     public User(Long id, String username, String fullName) { 
          this.id = id; this.username = username; this.fullName = fullName;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", username='" + username + '\'' +
-            ", passwordHash='" + password + '\'' +
-            ", fullName='" + fullName + '\'' + '}';
-    }
+
+	@Override
+	public String toString() {
+		return "User{" + "id=" + id + ", username='" + username + '\'' +
+				", passwordHash='" + password + '\'' +
+				", fullName='" + fullName + '\'' + '}';
+	}
 }

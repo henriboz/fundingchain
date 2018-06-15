@@ -1,6 +1,7 @@
 package fundingchain.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -8,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Service()
+@Service
+@Primary
 public class NotificationServiceImpl implements NotificationService {
 
     public static final String NOTIFY_MSG_SESSION_KEY = "siteNotificationMessages";

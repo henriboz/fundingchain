@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: site-head">
+    <title>New Project</title>
+</head>
+
+<body>
+<header th:replace="layout :: site-header" />
+
+<div id="fh5co-feature-product" class="fh5co-section-gray">
+    <form method="post" th:object="${projectForm}">
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Title</h3>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="title" type="text"  name="title" class="form-control" placeholder="Title" th:value="*{title}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Short Description</h3>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input id="description" type="text"  name="description" class="form-control" placeholder="Description" th:value="*{description}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>About</h3>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <textarea name="about" class="form-control" id="about" cols="30" rows="7" placeholder="About" th:value="*{about}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Funding Details</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="services animate-box">
+                            <span><i class="icon-stats-bars"></i></span>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <h3>Target Value</h3>
+                                    <p>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input id="targetValue" type="text"  name="targetValue" class="form-control" placeholder="targetValue" th:value="*{targetValue}"/>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <h3>Target Date</h3>
+                                    <p>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input id="dueDate" type="date" name="dueDate" class="form-control" placeholder="dueDate" th:value="*{dueDate}"/>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="col-md-12 text-center heading-section">
+                    <h3>Rewards</h3>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-paper-plane"></i></span>
+                            <h3>Up to</h3>
+                        </div>
+                        <p>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="lowerReward"><b>Value</b></label>
+                                    <input id="lowerReward" type="text"  name="lowerReward" class="form-control" placeholder="lowerReward" th:value="*{lowerReward}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="lowerRewardDesc"><b>Reward Description</b></label>
+                                    <textarea name="lowerRewardDesc" class="form-control" id="lowerRewardDesc" cols="5" rows="3" placeholder="Reward Description" th:value="*{lowerRewardDesc}"></textarea>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-aircraft"></i></span>
+                            <h3>Between <b ></b> and <b ></b></h3>
+                        </div>
+                        <p>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="midReward"><b>Value</b></label>
+                                    <input id="midReward" type="text"  name="midReward" class="form-control" placeholder="Value" th:value="*{midReward}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="midRewardDesc"><b>Reward Description</b></label>
+                                    <textarea name="midRewardDesc" class="form-control" id="midRewardDesc" cols="5" rows="3" placeholder="Reward Description" th:value="*{midRewardDesc}"></textarea>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="services animate-box">
+                            <span><i class="icon-rocket"></i></span>
+                            <h3>More than <b ></b></h3>
+                        </div>
+                        <p>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="upperReward"><b>Value</b></label>
+                                    <input id="upperReward" type="text"  name="upperReward" class="form-control" placeholder="Value" th:value="*{upperReward}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="upperRewardDesc"><b>Reward Description</b></label>
+                                    <textarea name="upperRewardDesc" class="form-control" id="upperRewardDesc" cols="5" rows="3" placeholder="Reward Description" th:value="*{upperRewardDesc}"></textarea>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<footer th:replace="layout :: site-footer" />
+</body>
+
+</html>

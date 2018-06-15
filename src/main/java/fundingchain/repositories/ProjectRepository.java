@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 	
-	@Query("SELECT p FROM Project p ORDER BY p.creation_date DESC")
-	List<Project> findLatest5Posts(Pageable pageable);
+	@Query("SELECT p FROM Project p ORDER BY p.creationdate DESC")
+	List<Project> findLatest6Projects(Pageable pageable);
 }

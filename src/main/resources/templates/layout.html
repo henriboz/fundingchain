@@ -79,11 +79,11 @@
                                         <li class="active">
                                             <a href="index.html" th:href="@{/}">Home</a>
                                         </li>
-                                        <li>
+                                        <li th:if="${#httpServletRequest.remoteUser}">
                                             <a href="#" class="fh5co-sub-ddown">Get Involved</a>
                                             <ul class="fh5co-sub-menu">
                                                 <li><a href="/projects">Fund Projects</a></li>
-                                                <li><a href="#">Start a Project</a></li>
+                                                <li><a href="/projects/create">Start a Project</a></li>
                                             </ul>
                                         </li>
                                         <li>
@@ -109,7 +109,14 @@
                             </div>
                         </div>
                     </header>
+                    <ul id="messages" th:with="notifyMessages=${session[T(fundingchain.services.NotificationServiceImpl).NOTIFY_MSG_SESSION_KEY]}">
+                        <li th:each="msg : ${notifyMessages}" th:text="${msg.text}"
+                            th:class="${#strings.toLowerCase(msg.type)}">
+                        </li>
+                        <span th:if="${notifyMessages}" th:remove="all" th:text="${session.remove(T(fundingchain.services.NotificationServiceImpl).NOTIFY_MSG_SESSION_KEY)}"></span>
+                    </ul>
                 </header>
+
                 <footer th:fragment="site-footer">
                     <div id="footer">
                         <div class="container">

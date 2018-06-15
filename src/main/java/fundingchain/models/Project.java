@@ -20,7 +20,10 @@ public class Project {
 	
 	@Lob @Column(nullable=false)
 	private String description;
-	
+
+	@Lob @Column(nullable = false)
+	private String about;
+
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private User owner;
 	
@@ -28,16 +31,19 @@ public class Project {
 	private boolean active;
 	
 	@Column(nullable = false, columnDefinition = "DATETIME")
-	private Date creation_date = new Date();
+	private Date creationdate = new Date();
 	
 	@Column(nullable = false, columnDefinition = "DATETIME")
-	private Date due_date = new Date();
+	private Date duedate = new Date();
 	
 	@Column(nullable = false)
 	private double funding_value;
 	
 	@OneToMany(mappedBy = "project")
 	private List<Funding> fundings = new ArrayList<Funding>();
+
+	@OneToOne
+	private Reward reward;
 
 	public Long getId(){
 		return id;
@@ -57,6 +63,8 @@ public class Project {
 	public void setDescription(String description){
 		this.description = description;
 	}
+	public String getAbout(){ return this.about;}
+	public void setAbout(String about){ this.about = about;}
 	public User getOwner()
 	{
 		return owner;
@@ -70,16 +78,16 @@ public class Project {
 	public void setActive(boolean active){
 		this.active = active;
 	}
-	public Date getCreationDate(){ return creation_date;	}
-	public void setCreationDate(Date creation_date){
-		this.creation_date = creation_date;
+	public Date getCreationdate(){ return creationdate;	}
+	public void setCreationdate(Date creationdate){
+		this.creationdate = creationdate;
 	}
-	public Date getDueDate(){
-		return due_date;
+	public Date getDuedate(){
+		return duedate;
 	}
 
-	public void setDueDate(Date due_date){
-		this.due_date = due_date;
+	public void setDuedate(Date duedate){
+		this.duedate = duedate;
 	}
 	public double getFundingValue(){
 		return funding_value;
@@ -96,6 +104,9 @@ public class Project {
 	public void addFunding(Funding funding){
 		this.fundings.add(funding);
 	}
+	public Reward getReward() { return reward; }
+	public void setReward(Reward reward) { this.reward = reward; }
+
 	public Project(){}
 	public Project(Long id, String title, String description, double funding_value){
 		this.id = id; 
@@ -117,9 +128,9 @@ public class Project {
 		return value;
 	}
 
-	public String getDueDateString(){
+	public String getDuedateString(){
 		Date now = new Date();
-		long ms = this.due_date.getTime() - now.getTime();
+		long ms = this.duedate.getTime() - now.getTime();
 		int time;
 		String result;
 		String post_result;
