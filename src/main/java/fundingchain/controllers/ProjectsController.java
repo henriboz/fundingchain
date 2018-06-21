@@ -34,6 +34,9 @@ public class ProjectsController {
     @Autowired
     private NotificationService notifyService;
 
+    @Autowired
+    private LedgerService ledgerService;
+
     @RequestMapping(value="/projects/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable("id") Long id, Model model,FundingForm fundingForm) {
         Project project = projectService.findById(id);
@@ -41,7 +44,17 @@ public class ProjectsController {
             notifyService.addErrorMessage("Cannot find project #" + id);
             return "redirect:/";
         }
-        List<Funding> fundings = projectService.findLatest6Fundings(project);
+        User user = userService.findUserByUsername(securityService.findLoggedInUsername());
+        List<Funding> fundings;
+        if (user.getId() == project.getOwner().getId()){
+            model.addAttribute("owner", true);
+            fundings = projectService.findAllFundings(project);
+        }
+        else{
+            model.addAttribute("owner", false);
+            fundings = projectService.findLatest6Fundings(project);
+        }
+
         if (fundings.size() > 0) model.addAttribute("fundings", fundings);
 
         model.addAttribute("reward", projectService.findReward(project));
@@ -52,35 +65,66 @@ public class ProjectsController {
 
     @RequestMapping(value = "/projects/view/{id}", method = RequestMethod.POST)
     public String view(@PathVariable("id") Long id, @Valid FundingForm fundingForm, BindingResult bindingResult, Model model ){
+
         Project project = projectService.findById(id);
         if (project == null) {
             notifyService.addErrorMessage("Cannot find project #" + id);
             return "redirect:/";
         }
+
         double fundingValue = fundingForm.getValue();
-        User user = userService.findByUsername(securityService.findLoggedInUsername());
-        Wallet wallet = user.getWallet();
-        if (wallet.getMoney() < fundingValue)
+        User user = userService.findUserByUsername(securityService.findLoggedInUsername());
+        Wallet userWallet = user.getWallet();
+
+
+        if (userWallet.getMoney() < fundingValue)
         {
             notifyService.addErrorMessage("You don't have enough money to fund this project!");
             return "redirect:/projects/view/"+id;
         }
 
-        wallet.setMoney(wallet.getMoney() - fundingValue);
-        userService.edit(wallet);
+        //Increases the admin money by fundingValue
+        User admin = userService.findUserByUsername("admin");
+        Wallet adminWallet = admin.getWallet();
+        adminWallet.setMoney(adminWallet.getMoney() + fundingValue);
+
+        //Decreases the admin money by fundingValue
+        userWallet.setMoney(userWallet.getMoney() - fundingValue);
+
+        //Gets a common current date for the Ledger and funding record.
+        Date currentDate = new Date();
+
+        //Creates the ledger record
+        Ledger ledger = new Ledger();
+        ledger.setFromUser(user);
+        ledger.setToUser(admin);
+        ledger.setValue(fundingValue);
+        ledger.setDate(currentDate);
+
+        //Creates the funding
         Funding funding = new Funding();
         funding.setFunder(user);
-        funding.setFundingdate(new Date());
+        funding.setFundingdate(currentDate);
         funding.setProject(project);
         funding.setValue(fundingValue);
-        projectService.create(funding);
-        notifyService.addInfoMessage("You have successfully funded this project!");
+
+        //Saves everything in the DB
+        try{
+            userService.edit(adminWallet);
+            userService.edit(userWallet);
+            projectService.create(funding);
+            ledgerService.create(ledger);
+            notifyService.addInfoMessage("You have successfully funded this project!");
+        }catch (Exception e){
+            System.out.println(e);
+            notifyService.addErrorMessage("There was an error processing your funding. Please try again.");
+        }
         return "redirect:/projects/view/"+id;
     }
 
     @RequestMapping("/projects")
     public String view(Model model){
-      List<Project> projects = projectService.findLatest6();
+      List<Project> projects = projectService.findLatest6Active();
       if (projects == null) {
           notifyService.addErrorMessage("There are no registered projects.");
           return "redirect:/";
@@ -110,7 +154,7 @@ public class ProjectsController {
         reward.setUppervalue(projectForm.getUpperReward());
         reward.setUpperDesc(projectForm.getUpperRewardDesc());
 
-        User user = userService.findByUsername(securityService.findLoggedInUsername());
+        User user = userService.findUserByUsername(securityService.findLoggedInUsername());
 
         Project project = new Project();
         project.setTile((projectForm.getTitle()));
@@ -120,7 +164,7 @@ public class ProjectsController {
         project.setFundingValue(projectForm.getTargetValue());
         project.setCreationdate(new Date());
         /*
-        The is taken as a String from the View - Couldn't make it come as a Date() object.
+        The date is taken as a String from the View - Couldn't make it come as a Date() object.
         Then it's converted to Date and added by 86399000 milliseconds (23 hours, 59 minutes, 59 seconds).
          */
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,12 +176,20 @@ public class ProjectsController {
             e.printStackTrace();
         }
 
-        project.setReward(reward);
-        project.setOwner(user);
+        try{
+            reward = projectService.create(reward);
 
-        projectService.create(project);
+            project.setReward(reward);
+            project.setOwner(user);
 
-        notifyService.addInfoMessage("Project created successfully!");
+            projectService.create(project);
+
+            notifyService.addInfoMessage("Project created successfully!");
+        }catch (Exception e){
+            System.out.println(e);
+            notifyService.addErrorMessage("There was an error creating your project. Please try again later.");
+        }
+
         return "redirect:/projects/";
     }
 }

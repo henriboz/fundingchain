@@ -1,5 +1,6 @@
 package fundingchain.repositories;
 
+import fundingchain.models.Funding;
 import fundingchain.models.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	//@Query("SELECT u FROM User u where u.username = :username")
 	User findByUsername(String username);
 	//User findByUsername(String username);
+	User findByFundings(Funding f);
 }

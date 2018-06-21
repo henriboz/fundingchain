@@ -1,8 +1,10 @@
 package fundingchain.services;
 
+import fundingchain.models.Funding;
 import fundingchain.models.Role;
 import fundingchain.models.User;
 import fundingchain.models.Wallet;
+import fundingchain.repositories.FundingRepository;
 import fundingchain.repositories.RoleRepository;
 import fundingchain.repositories.UserRepository;
 import fundingchain.repositories.WalletRepository;
@@ -30,19 +32,32 @@ public class UserServiceJpaImpl implements UserService{
 	@Autowired
 	private WalletRepository walletRepository;
 
+	@Autowired
+	private FundingRepository fundingRepository;
+
 	@Override
 	public List<User> findAll() {
 		return this.userRepo.findAll();
 	}
 
 	@Override
-	public User findById(Long id) {
+	public User findUserById(Long id) {
 		return this.userRepo.findOne(id);
 	}
 
 	@Override
-	public User findByUsername(String username){
+	public User findUserByUsername(String username){
 		return this.userRepo.findByUsername(username);
+	}
+
+	@Override
+	public User findUserByFunding(Funding f){
+		return this.userRepo.findByFundings(f);
+	}
+
+	@Override
+	public List<Funding> findFundingsByUser(User user){
+		return this.fundingRepository.findByFunderOrderByFundingdateDesc(user);
 	}
 
 	@Override

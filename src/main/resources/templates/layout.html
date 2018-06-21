@@ -80,7 +80,7 @@
                                             <a href="index.html" th:href="@{/}">Home</a>
                                         </li>
                                         <li th:if="${#httpServletRequest.remoteUser}">
-                                            <a href="#" class="fh5co-sub-ddown">Get Involved</a>
+                                            <a href="/projects" class="fh5co-sub-ddown">Get Involved</a>
                                             <ul class="fh5co-sub-menu">
                                                 <li><a href="/projects">Fund Projects</a></li>
                                                 <li><a href="/projects/create">Start a Project</a></li>
@@ -94,9 +94,13 @@
                                             <a href="/users/login.html" th:href="@{/users/login}"
                                                th:if="!${#httpServletRequest.remoteUser}">Login</a>
                                         </li>
-                                        <li>
-                                            <a href="/users/view.html" th:href="@{/users/view}"
-                                               th:if="${#httpServletRequest.remoteUser}">My Profile</a>
+                                        <li th:if="${#httpServletRequest.remoteUser}">
+                                            <a href="#" class="fh5co-sub-ddown">My Profile</a>
+                                            <ul class="fh5co-sub-menu">
+                                                <li><a href="/users/fundedprojects.hml" th:href="@{/users/{username}/fundedprojects(username=${#httpServletRequest.remoteUser})}">My Funded Projects</a></li>
+                                                <li><a href="/users/createdprojects.hml" th:href="@{/users/{username}/createdprojects(username=${#httpServletRequest.remoteUser})}">My Projects</a></li>
+                                                <li><a href="/users/wallet.html" th:href="@{/users/{username}/wallet(username=${#httpServletRequest.remoteUser})}">My Wallet</a></li>
+                                            </ul>
                                         </li>
                                         <li>
                                             <a href="about.html">About Us</a>

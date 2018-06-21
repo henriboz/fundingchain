@@ -24,7 +24,7 @@ public class Project {
 	@Lob @Column(nullable = false)
 	private String about;
 
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false)
 	private User owner;
 	
 	@Column(nullable = false, columnDefinition="TINYINT")
@@ -106,7 +106,13 @@ public class Project {
 	}
 	public Reward getReward() { return reward; }
 	public void setReward(Reward reward) { this.reward = reward; }
-
+	public String getStatus(){
+		if (this.getActive()) return "Active";
+		else{
+			if (getSumFundingsValue() >= getFundingValue()) return "Successful!";
+			else return "Failed!";
+		}
+	}
 	public Project(){}
 	public Project(Long id, String title, String description, double funding_value){
 		this.id = id; 
@@ -116,10 +122,7 @@ public class Project {
 		//this.due_date = due_date;
 		this.funding_value = funding_value;
 	}
-	@Override
-	public String toString(){
-		return "";
-	}
+
 	public double getSumFundingsValue(){
 		double value = 0;
 		for (Funding f: this.getFundings()){
@@ -153,5 +156,22 @@ public class Project {
 
 	public int getProjectPercentComplete(){
 		return (int)(100*this.getSumFundingsValue()/this.getFundingValue());
+	}
+
+	public String getValueToReward(double value){
+		if (this.getActive()) return "";
+		else{
+			if (getSumFundingsValue() >= getFundingValue()){
+				if (value < this.reward.getLowervalue()) return this.reward.getLowerDesc();
+				else if (value > this.reward.getUppervalue()) return this.reward.getUpperDesc();
+				else return this.reward.getMidDesc();
+			}
+			else return "No Reward!";
+		}
+	}
+
+	@Override
+	public String toString(){
+		return "";
 	}
 }

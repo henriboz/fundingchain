@@ -44,6 +44,14 @@ public class Funding{
 	public Date getFundingdate() {	return fundingdate;}
 	public void setFundingdate(Date fundingdate) { this.fundingdate = fundingdate; }
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Funding(){}
 	public Funding(Project project, User funder, double value){
 		this.project = project;
