@@ -9,7 +9,7 @@
 <header th:replace="layout :: site-header" />
 
 <div id="fh5co-feature-product" class="fh5co-section-gray">
-    <form method="post" th:object="${projectForm}">
+    <form method="post" enctype="multipart/form-data" th:object="${projectForm}">
 
 
         <div class="container">
@@ -21,6 +21,21 @@
                             <input id="title" type="text"  name="title" class="form-control" placeholder="Title" th:value="*{title}"/>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                </div>
+                <div class="col-md-4 text-center heading-section">
+                    <h3>Image</h3>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="file"><b>(1900x800)</b></label>
+                            <input type="file" name="file" id="file" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
                 </div>
             </div>
             <div class="row">

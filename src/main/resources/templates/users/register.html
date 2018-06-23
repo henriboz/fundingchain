@@ -21,24 +21,35 @@
           <div class="form-group">
             <label for="username"><b>Username</b></label>
             <input id="username" type="text" name="username" class="form-control" placeholder="Username" th:value="*{username}"/>
+            <span class="formError" style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Invalid Email</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="email"><b>Email</b></label>
+            <input id="email" type="text" name="email" class="form-control" placeholder="Email" th:value="*{email}"/>
+            <span class="formError" style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Invalid Email</span>
           </div>
         </div>
         <div class="col-md-12">
           <div class="form-group">
             <label for="fullname"><b>Full Name</b></label>
             <input id="fullname" type="text" name="fullname" class="form-control" placeholder="Full Name" th:value="*{fullname}"/>
+            <span class="formError" style="color: red" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}">Invalid Name</span>
           </div>
         </div>
         <div class="col-md-12">
           <div class="form-group">
             <label for="password"><b>Password</b></label>
             <input id="password" type="password" name="password" class="form-control" placeholder="Password" th:value="*{password}"/>
+            <span class="formError" style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Invalid Password</span>
           </div>
         </div>
         <div class="col-md-12">
           <div class="form-group">
             <label for="confirmpassword"><b>Confirm Password</b></label>
             <input id="confirmpassword" type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password" th:value="*{confirmpassword}"/>
+            <span class="formError" style="color: red" th:if="${#fields.hasErrors('confirmpassword')}" th:errors="*{confirmpassword}">Password must match</span>
           </div>
         </div>
         <div class="col-md-12">

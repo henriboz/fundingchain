@@ -21,6 +21,9 @@ public class User{
 	
 	@Column(length=100)
 	private String fullName;
+
+	@Column(length = 100)
+	private String email;
 	
 	@OneToMany(mappedBy = "owner")
 	private Set<Project> projects = new HashSet<Project>();
@@ -58,7 +61,14 @@ public class User{
     public void setFullName(String fullName) { 
     	this.fullName = fullName; 
     	}
-    public Set<Project> getProjects() { 
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Set<Project> getProjects() {
     	return projects; 
     	}
     public void setProjects(Set<Project> projects) { 
@@ -82,18 +92,12 @@ public class User{
     public void addRole(Role role){
     	this.roles.add(role);
     }
-	public Wallet getWallet() {	return wallet; }
-	public void setWallet(Wallet wallet) { this.wallet = wallet; }
-    public User() { }
-    /*public User(User user){
-    	this.setUsername(user.getUsername());
-    	this.setPassword(user.getPassword());
-    	this.setFullName(user.getFullName());
-    }*/
-    public User(Long id, String username, String fullName) { 
-         this.id = id; this.username = username; this.fullName = fullName;
-    }
-
+	public Wallet getWallet() {
+		return wallet;
+	}
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
+	}
 
 	@Override
 	public String toString() {

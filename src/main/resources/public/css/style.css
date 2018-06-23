@@ -157,10 +157,18 @@ ul#messages li.error {
   position: relative;
   height: 800px;
 }
+.fh5co-cover-profile{
+  position: relative;
+  height: 300px;
+}
+
 @media screen and (max-width: 768px) {
   .fh5co-cover,
   .fh5co-hero {
     height: 700px;
+  }
+  .fh5co-cover-profile{
+    height: 100%;
   }
 }
 .fh5co-cover.fh5co-hero-2,
@@ -1067,7 +1075,8 @@ ul#messages li.error {
   margin-bottom: 60px;
 }
 .fh5co-blog a img {
-  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 @media screen and (max-width: 768px) {
   .fh5co-blog {

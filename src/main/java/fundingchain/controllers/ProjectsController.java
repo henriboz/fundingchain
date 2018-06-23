@@ -4,12 +4,16 @@ import fundingchain.forms.ProjectForm;
 import fundingchain.services.*;
 import fundingchain.models.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,11 +21,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 public class ProjectsController {
+
+    @Value("${file.upload.directory}")
+    private String UPLOAD_FOLDER;
+
     @Autowired
     private ProjectService projectService;
 
@@ -38,7 +49,7 @@ public class ProjectsController {
     private LedgerService ledgerService;
 
     @RequestMapping(value="/projects/view/{id}", method = RequestMethod.GET)
-    public String view(@PathVariable("id") Long id, Model model,FundingForm fundingForm) {
+    public String view(@PathVariable("id") Long id, Model model) {
         Project project = projectService.findById(id);
         if (project == null) {
             notifyService.addErrorMessage("Cannot find project #" + id);
@@ -64,7 +75,7 @@ public class ProjectsController {
     }
 
     @RequestMapping(value = "/projects/view/{id}", method = RequestMethod.POST)
-    public String view(@PathVariable("id") Long id, @Valid FundingForm fundingForm, BindingResult bindingResult, Model model ){
+    public String view(@PathVariable("id") Long id, @Valid FundingForm fundingForm ){
 
         Project project = projectService.findById(id);
         if (project == null) {
@@ -140,11 +151,16 @@ public class ProjectsController {
     }
 
     @RequestMapping(value = "/projects/create", method = RequestMethod.POST)
-    public String create(@Valid ProjectForm projectForm, BindingResult bindingResult, Model model ){
+    public String create(@Valid ProjectForm projectForm, BindingResult bindingResult, @RequestParam("file") MultipartFile file){
         if (bindingResult.hasErrors()) {
             notifyService.addErrorMessage("Please fill ALL the information correctly!");
             return "/projects/create";
         }
+        if (file.isEmpty()) {
+            notifyService.addErrorMessage("Please upload an image to your project!");
+            return "/projects/create";
+        }
+
 
         Reward reward = new Reward();
         reward.setLowervalue(projectForm.getLowerReward());
@@ -184,6 +200,11 @@ public class ProjectsController {
 
             projectService.create(project);
 
+            //Saves file to directory
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get( UPLOAD_FOLDER + "projects//" +  project.getId().toString()+".png");
+            Files.write(path, bytes);
+
             notifyService.addInfoMessage("Project created successfully!");
         }catch (Exception e){
             System.out.println(e);
@@ -192,4 +213,5 @@ public class ProjectsController {
 
         return "redirect:/projects/";
     }
+
 }

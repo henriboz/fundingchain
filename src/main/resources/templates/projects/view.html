@@ -9,10 +9,11 @@
 <header th:replace="layout :: site-header" />
     <div class="fh5co-hero">
         <div class="fh5co-overlay"></div>
-        <div class="fh5co-cover text-center" data-stellar-background-ratio="0.5" style="background-image: url(/img/cover_bg_2.jpg);">
+        <div class="fh5co-cover text-center" data-stellar-background-ratio="0.5"  th:style="${'background-image: url(/images/projects/'+project.getId()+'.png);'}">
             <div class="desc animate-box">
                 <h2><strong th:text="${project.getTitle()}"></strong></h2>
                 <span th:text="${project.getDescription()}"></span>
+                <span class="posted_by" >from <a th:href="@{/users/{username}(username=${project.getOwner().getUsername()})}" th:text="${project.getOwner().getFullName()}" ></a></span>
             </div>
         </div>
 
@@ -21,19 +22,19 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center heading-section">
-                    <h3>About</h3>
+                    <h3 >About</h3>
                     <p th:text="${project.getAbout()}"></p>
                 </div>
             </div>
 
-            <div class="row row-bottom-padded-md">
+            <!--<div class="row row-bottom-padded-md">
                 <div class="col-md-6 text-center animate-box">
                     <p><img src="/img/cover_bg_2.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/></p>
                 </div>
                 <div class="col-md-6 text-center animate-box">
                     <p><img src="/img/cover_bg_3.jpg" alt="Free HTML5 Bootstrap Template" class="img-responsive"/></p>
                 </div>
-            </div>
+            </div>-->
 
             <div class="row">
                 <div class="col-md-12 text-center heading-section">
@@ -116,7 +117,7 @@
                                         <p>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input id="value" type="value" name="value" class="form-control" placeholder="value" th:value="*{value}"/>
+                                                <input id="value" type="value" name="value" class="form-control" placeholder="value" th:value="${value}"/>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -165,25 +166,23 @@
                         <div class="blog-text">
                             <div class="prod-title">
                                 <p>
-                                <div class="col-lg-3 col-md-3 col-sm-6">
-                                    <i class="icon-user-minus"> </i>
-                                    <a>From: <b th:text="${f.getFunder().getFullName()}"></b>&emsp;</a>
-                                </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6">
+                                        <i class="icon-user-minus"> </i>
+                                        <a>From: <b th:text="${f.getFunder().getFullName()}"></b>&emsp;</a>
+                                    </div>
 
-                                <div class="col-lg-2 col-md-2 col-sm-6">
-                                    <i class="icon-coin-dollar"> </i>
-                                    <a><b th:text="${f.getValue()}"></b>&emsp;</a>
-                                </div>
-                                <div class="col-lg-3 col-md-3 col-sm-6 left" >
-                                    <i class="icon-gift2"> </i>
-                                    <a>Email: <b th:text="${f.getFunder().getFullName()}"></b>&emsp;</a>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-sm-6">
-                                    <i class="icon-calendar"> </i>
-                                    <a>Date: <b th:text="${f.getFundingdate()}"></b></a>
-                                </div>
-
-
+                                    <div class="col-lg-2 col-md-2 col-sm-6">
+                                        <i class="icon-coin-dollar"> </i>
+                                        <a><b th:text="${f.getValue()}"></b>&emsp;</a>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-6 left" >
+                                        <i class="icon-gift2"> </i>
+                                        <a>Email: <b th:text="${f.getFunder().getFullName()}"></b>&emsp;</a>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6">
+                                        <i class="icon-calendar"> </i>
+                                        <a>Date: <b th:text="${f.getFundingdate()}"></b></a>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -195,6 +194,23 @@
 
 
 <footer th:replace="layout :: site-footer" />
+<script src="/js/jquery.min.js"></script>
+<!-- jQuery Easing -->
+<script src="/js/jquery.easing.1.3.js"></script>
+<!-- Bootstrap -->
+<script src="/js/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/sticky.js"></script>
+
+<!-- Stellar -->
+<script src="/js/jquery.stellar.min.js"></script>
+<!-- Superfish -->
+<script src="/js/hoverIntent.js"></script>
+<script src="/js/superfish.js"></script>
+
+<!-- Main JS -->
+<script src="/js/main.js"></script>
 </body>
 
 </html>

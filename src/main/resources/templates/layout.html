@@ -56,8 +56,6 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-6 col-sm-6 text-left fh5co-link">
-                                    <a href="#">FAQ</a>
-                                    <a href="#">Contact</a>
                                 </div>
                                 <div class="col-md-6 col-sm-6 text-right fh5co-social">
                                     <a href="/logout" th:if="${#httpServletRequest.remoteUser}">Logout</a>
@@ -98,15 +96,10 @@
                                             <a href="#" class="fh5co-sub-ddown">My Profile</a>
                                             <ul class="fh5co-sub-menu">
                                                 <li><a href="/users/fundedprojects.hml" th:href="@{/users/{username}/fundedprojects(username=${#httpServletRequest.remoteUser})}">My Funded Projects</a></li>
-                                                <li><a href="/users/createdprojects.hml" th:href="@{/users/{username}/createdprojects(username=${#httpServletRequest.remoteUser})}">My Projects</a></li>
+                                                <!--<li><a href="/users/createdprojects.hml" th:href="@{/users/{username}/createdprojects(username=${#httpServletRequest.remoteUser})}">My Projects</a></li>-->
                                                 <li><a href="/users/wallet.html" th:href="@{/users/{username}/wallet(username=${#httpServletRequest.remoteUser})}">My Wallet</a></li>
+                                                <li><a href="/users/index.html" th:href="@{/users/{username}(username=${#httpServletRequest.remoteUser})}">My Profile</a></li>
                                             </ul>
-                                        </li>
-                                        <li>
-                                            <a href="about.html">About Us</a>
-                                        </li>
-                                        <li>
-                                            <a href="contact.html">Contact</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -130,7 +123,6 @@
                                         <a href="#"><i class="icon-twitter2"></i></a>
                                         <a href="#"><i class="icon-facebook2"></i></a>
                                         <a href="#"><i class="icon-instagram"></i></a>
-                                        <a href="#"><i class="icon-dribbble2"></i></a>
                                         <a href="#"><i class="icon-youtube"></i></a>
                                     </p>
                                 </div>

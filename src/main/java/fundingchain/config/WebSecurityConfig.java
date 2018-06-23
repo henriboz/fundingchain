@@ -1,6 +1,7 @@
 package fundingchain.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Value("${file.upload.directory}")
+    private String UPLOAD_FOLDER;
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -26,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         		http
         		.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/js/**","/css/**","/img/**", "/fonts/**", "/sass/**", "/users/register", "/", "/index").permitAll()
+                    .antMatchers("/js/**","/css/**","/img/**", "/fonts/**", "/sass/**", "/users/register", "/", "/index", UPLOAD_FOLDER+"**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

@@ -3,6 +3,7 @@ import fundingchain.services.*;
 import fundingchain.forms.*;
 import fundingchain.models.*;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,13 +16,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
 @Controller
 public class UsersController {
+
+	@Value("${file.upload.directory}")
+	private String UPLOAD_FOLDER;
+
 	@Autowired
     private UserService userService;
 
@@ -42,12 +52,19 @@ public class UsersController {
     }
 	
 	 @RequestMapping(value = "/users/register", method = RequestMethod.POST)
-	 public String registration(@Valid RegisterForm registerForm, BindingResult bindingResult, Model model) {
+	 public String registration(@Valid RegisterForm registerForm, BindingResult bindingResult) {
 
 	     if (bindingResult.hasErrors()) {
 	    	 notifyService.addErrorMessage("Please fill the form correctly!");
 	    	 return "users/register";
 	     }
+
+	     //Verifies first if username is unique. Don't fall into an exception
+		 User existing_user = userService.findUserByUsername(registerForm.getUsername());
+	     if(existing_user != null){
+			 notifyService.addErrorMessage("The selected username is already in use. Please try another one.");
+			 return "users/register";
+		 }
 
 	     User admin = userService.findUserByUsername("admin");
 	     Wallet adminWallet = admin.getWallet();
@@ -60,6 +77,7 @@ public class UsersController {
 		 user.setUsername(registerForm.getUsername());
 		 user.setPassword(registerForm.getPassword());
 		 user.setFullName(registerForm.getFullname());
+		 user.setEmail(registerForm.getEmail());
 		 user.setWallet(wallet);
 
 		 Ledger ledger = new Ledger();
@@ -117,23 +135,6 @@ public class UsersController {
 		return "/users/fundedprojects";
 	}
 
-	@RequestMapping("/users/{username}/createdprojects")
-	public String viewCreatedProjects(@PathVariable("username") String username, Model model){
-		User user = userService.findUserByUsername(securityService.findLoggedInUsername());
-		if (!user.getUsername().equals(username))
-		{
-			notifyService.addErrorMessage("You can't access other users!");
-			return "redirect:/";
-		}
-		List<Project> projects = projectService.findByOwner(user);
-		if (projects.size() > 0) {
-			model.addAttribute("projects", projects);
-		}
-		//model.addAttribute("user", user);
-
-		return "/users/createdprojects";
-	}
-
 	@RequestMapping("/users/{username}/wallet")
 	public String viewWallet(@PathVariable("username") String username, Model model){
 		User user = userService.findUserByUsername(securityService.findLoggedInUsername());
@@ -150,5 +151,71 @@ public class UsersController {
 		model.addAttribute("ledgers", ledgers);
 
 		return "/users/wallet";
+	}
+
+	@RequestMapping("/users/{username}")
+	public String view(@PathVariable("username") String username, Model model){
+
+		User user = userService.findUserByUsername(username);
+		if(user == null){
+			notifyService.addErrorMessage("Could not find the requested user!");
+			return "redirect:/";
+		}
+		List<Project> projects = projectService.findByOwner(user);
+		if (projects.size() > 0) {
+			model.addAttribute("projects", projects);
+		}
+
+		model.addAttribute("user", user);
+		return "/users/index";
+	}
+
+	@RequestMapping(value = "/users/{username}/edit", method = RequestMethod.GET)
+	public String edit(@PathVariable("username") String username,@Valid UserEditForm userEditForm, Model model) {
+		//System.out.println(username);
+		User user = userService.findUserByUsername(securityService.findLoggedInUsername());
+		if (!user.getUsername().equals(username))
+		{
+			notifyService.addErrorMessage("You can't edit other users!");
+			return "redirect:/";
+		}
+		model.addAttribute("user", user);
+		return "/users/edit";
+	}
+
+	@RequestMapping(value = "/users/{username}/edit", method = RequestMethod.POST)
+	public String edit(@Valid UserEditForm userEditForm, BindingResult bindingResult,
+					   @RequestParam("file") MultipartFile file,@PathVariable("username") String username){
+
+		if (bindingResult.hasErrors()) {
+			notifyService.addErrorMessage("Please fill the form correctly!");
+			return "redirect:/users/"+username+"/edit/";
+		}
+		//System.out.println(username);
+		User user = userService.findUserByUsername(securityService.findLoggedInUsername());
+		if (!user.getUsername().equals(username))
+		{
+			notifyService.addErrorMessage("You can't edit other users!");
+			return "redirect:/users/"+user.getUsername();
+		}
+		user.setEmail(userEditForm.getEmail());
+		user.setFullName(userEditForm.getFullname());
+		user.getWallet().setPublicKey(userEditForm.getPublicKey());
+
+		try{
+			userService.edit(user);
+			if(!file.isEmpty()){
+				//Saves file to directory
+				byte[] bytes = file.getBytes();
+				Path path = Paths.get( UPLOAD_FOLDER + "users//" +  user.getUsername()+".png");
+				Files.write(path, bytes);
+			}
+
+		}catch (Exception e){
+			notifyService.addErrorMessage("There was a problem saving your profile. Please try again.");
+			System.out.println(e);
+		}
+
+		return "redirect:/users/"+user.getUsername();
 	}
 }
