@@ -16,6 +16,14 @@ public class Wallet {
     @Column
     private String publicKey;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public double getMoney() {
         return money;
     }

@@ -142,7 +142,8 @@
                 <div class="col-md-4" th:each="f : ${fundings}">
                     <div class="fh5co-team text-center animate-box">
                         <figure>
-                            <img src="/img/person_2.jpg" alt="user"/>
+                            <img th:if="${f.getFunder().isHasPicture()}" th:src="${'/images/users/'+f.getFunder().getUsername()+'.png'}" alt="user"/>
+                            <img th:if="${f.getFunder().isHasPicture()==false}" src="/img/person_2.jpg" alt="user"/>
                         </figure>
                         <div>
                             <h3 th:text="${f.getFunder().getFullName()}"></h3>

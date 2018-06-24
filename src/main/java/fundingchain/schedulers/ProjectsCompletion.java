@@ -1,9 +1,7 @@
 package fundingchain.schedulers;
 
 import fundingchain.models.*;
-import fundingchain.services.LedgerService;
-import fundingchain.services.ProjectService;
-import fundingchain.services.UserService;
+import fundingchain.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +25,8 @@ public class ProjectsCompletion {
 
     @Autowired
     private LedgerService ledgerService;
+
+    EtherService etherService;
 
 
     private void sendMoneyToFunders(List<Funding> funding){
@@ -58,6 +58,7 @@ public class ProjectsCompletion {
             userService.edit(adminWallet);
             userService.edit(wallet);
             ledgerService.create(ledger);
+            etherService.transfer(admin,user, value);
         }catch (Exception e){
             System.out.println("ERROR - "+ e);
         }
@@ -85,11 +86,12 @@ public class ProjectsCompletion {
             List<Funding> fundings = projectService.findAllFundings(p);
 
             if (fundings.size() > 0) {
+                etherService = new EtherServiceIml();
                 p.setFunders(fundings);
                 //If total fundings greater than the target value -> Success
                 if (p.getSumFundingsValue() >= p.getFundingValue()) {
                     //Sends 99% of money to the project owner. 1% is to the house.
-                    this.sendMoney(p.getOwner(), p.getSumFundingsValue()*0.99);
+                    this.sendMoney(p.getOwner(), p.getSumFundingsValue());
                 } else {
                     //Send everything back to the funders. ¯\_(ツ)_/¯
                     this.sendMoneyToFunders(fundings);

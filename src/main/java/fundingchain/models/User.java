@@ -37,6 +37,9 @@ public class User{
 	@OneToOne
 	private Wallet wallet;
 
+	@Column(nullable = false, columnDefinition="TINYINT")
+	private boolean hasPicture;
+
 	public Long getId() {
 		return id; 
 		}
@@ -97,6 +100,14 @@ public class User{
 	}
 	public void setWallet(Wallet wallet) {
 		this.wallet = wallet;
+	}
+
+	public boolean isHasPicture() {
+		return hasPicture;
+	}
+
+	public void setHasPicture(boolean hasPicture) {
+		this.hasPicture = hasPicture;
 	}
 
 	@Override

@@ -48,6 +48,8 @@ public class ProjectsController {
     @Autowired
     private LedgerService ledgerService;
 
+    private EtherService etherService;
+
     @RequestMapping(value="/projects/view/{id}", method = RequestMethod.GET)
     public String view(@PathVariable("id") Long id, Model model) {
         Project project = projectService.findById(id);
@@ -87,7 +89,6 @@ public class ProjectsController {
         User user = userService.findUserByUsername(securityService.findLoggedInUsername());
         Wallet userWallet = user.getWallet();
 
-
         if (userWallet.getMoney() < fundingValue)
         {
             notifyService.addErrorMessage("You don't have enough money to fund this project!");
@@ -119,12 +120,15 @@ public class ProjectsController {
         funding.setProject(project);
         funding.setValue(fundingValue);
 
+        etherService = new EtherServiceIml();
+
         //Saves everything in the DB
         try{
             userService.edit(adminWallet);
             userService.edit(userWallet);
             projectService.create(funding);
             ledgerService.create(ledger);
+            etherService.transfer(user, admin, fundingValue);
             notifyService.addInfoMessage("You have successfully funded this project!");
         }catch (Exception e){
             System.out.println(e);

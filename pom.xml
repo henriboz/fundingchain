@@ -49,5 +49,20 @@
             <artifactId>spring-boot-starter-security</artifactId>
             <version>1.4.0.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>core</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.web3j</groupId>
+            <artifactId>abi</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 </project>

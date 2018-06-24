@@ -14,9 +14,6 @@ public class UserEditForm {
     @Email (message = "Invalid email.")
     private String email;
 
-    @Size(min = 40, max = 40, message = "Your public key should have 40 characters!")
-    private String publicKey;
-
     public String getEmail() {
         return email;
     }
@@ -33,11 +30,4 @@ public class UserEditForm {
         this.fullname = fullname;
     }
 
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
 }

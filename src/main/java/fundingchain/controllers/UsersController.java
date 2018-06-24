@@ -46,6 +46,8 @@ public class UsersController {
 
     @Autowired LedgerService ledgerService;
 
+	private EtherService etherService;
+
 	@RequestMapping(value = "/users/register", method = RequestMethod.GET)
     public String registration(RegisterForm registerForm) {
         return "users/register";
@@ -79,6 +81,7 @@ public class UsersController {
 		 user.setFullName(registerForm.getFullname());
 		 user.setEmail(registerForm.getEmail());
 		 user.setWallet(wallet);
+		 user.setHasPicture(false);
 
 		 Ledger ledger = new Ledger();
 		 ledger.setValue(100);
@@ -86,17 +89,28 @@ public class UsersController {
 		 ledger.setToUser(user);
 		 ledger.setDate(new Date());
 
+		 etherService = new EtherServiceIml();
+
 	     try{
+
+	     	 //Created user at the DB
 			 userService.create(wallet);
-			 userService.create(user);
+			 user = userService.create(user);
 			 userService.edit(adminWallet);
 			 ledgerService.create(ledger);
+
+			 //Creates user at Ethereum with encrypted key
+			 String publiKey = etherService.create(user.getPassword());
+			 wallet.setPublicKey(publiKey);
+
+			 userService.edit(wallet);
+			 etherService.transfer(admin,user,100);
 			 notifyService.addInfoMessage("User Registered correctly!");
+
 		 }catch (Exception e){
 			 System.out.println("ERROR - "+ e);
 			 notifyService.addErrorMessage("There was an error creating your user. Please try again.");
 		 }
-
 	     //securityService.autologin(user.getUsername(), user.getPassword());
 	     return "redirect:/";
 	 }
@@ -200,17 +214,17 @@ public class UsersController {
 		}
 		user.setEmail(userEditForm.getEmail());
 		user.setFullName(userEditForm.getFullname());
-		user.getWallet().setPublicKey(userEditForm.getPublicKey());
 
 		try{
-			userService.edit(user);
 			if(!file.isEmpty()){
 				//Saves file to directory
 				byte[] bytes = file.getBytes();
 				Path path = Paths.get( UPLOAD_FOLDER + "users//" +  user.getUsername()+".png");
 				Files.write(path, bytes);
+				user.setHasPicture(true);
 			}
-
+			userService.edit(user.getWallet());
+			userService.edit(user);
 		}catch (Exception e){
 			notifyService.addErrorMessage("There was a problem saving your profile. Please try again.");
 			System.out.println(e);
