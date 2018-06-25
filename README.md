@@ -1,5 +1,5 @@
 # Funding Chain
-Crowd funding website project delevoped university class - OO programming.
+Crowd funding website project developed for university class - OO programming.
 -JAVA
 -SPRING-BOOT
 -SPRING-JPA
